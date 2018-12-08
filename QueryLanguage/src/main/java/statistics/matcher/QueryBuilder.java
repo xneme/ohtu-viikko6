@@ -9,7 +9,9 @@ public class QueryBuilder {
     }
 
     public Matcher build() {
-        return matcher;
+        Matcher result = matcher;
+        matcher = new All();
+        return result;
     }
     
     public QueryBuilder playsIn(String team) {
@@ -29,6 +31,11 @@ public class QueryBuilder {
     
     public QueryBuilder not() {
         matcher = new Not(matcher);
+        return this;
+    }
+    
+    public QueryBuilder oneOf(Matcher... matchers) {
+        matcher = new And(matcher, new Or(matchers));
         return this;
     }
 }
